@@ -16,6 +16,7 @@ class CreateMeetingRoomsTable extends Migration
     {
         Schema::create('meeting_rooms', function (Blueprint $table) {
             $table->primary('id');
+            $table->integer('id');
             $table->string('description');
             $table->timestamps();
         });
