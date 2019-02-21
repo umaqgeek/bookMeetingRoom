@@ -15,16 +15,18 @@ class CreateMeetingRoomsTable extends Migration
     public function up()
     {
         Schema::create('meeting_rooms', function (Blueprint $table) {
-            $table->increments('id');
+            $table->primary('id');
             $table->string('description');
             $table->timestamps();
         });
 
         MeetingRoom::create([
+            'id' => '1',
             'description' => 'Bilik Mesyuarat 1'
         ]);
 
         MeetingRoom::create([
+            'id' => '2',
             'description' => 'Bilik Mesyuarat 2'
         ]);
     }

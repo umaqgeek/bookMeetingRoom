@@ -12,6 +12,7 @@ class MeetingRoom extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'description'
     ];
 }

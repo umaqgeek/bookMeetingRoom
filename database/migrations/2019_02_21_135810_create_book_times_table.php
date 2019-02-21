@@ -15,20 +15,23 @@ class CreateBookTimesTable extends Migration
     public function up()
     {
         Schema::create('book_times', function (Blueprint $table) {
-            $table->increments('id');
+            $table->primary('id');
             $table->string('description');
             $table->timestamps();
         });
 
         BookTime::create([
+            'id' => '1',
             'description' => '8.00 AM - 12.00 PM'
         ]);
 
         BookTime::create([
+            'id' => '2',
             'description' => '2.00 PM - 6.00 PM'
         ]);
 
         BookTime::create([
+            'id' => '3',
             'description' => '8.00 PM - 11.00 PM'
         ]);
     }

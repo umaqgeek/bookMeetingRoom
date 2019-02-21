@@ -12,6 +12,7 @@ class BookTime extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'description'
     ];
 }
