@@ -68,9 +68,9 @@ class ImportLegacyFebruary2019 extends Migration
             $table->string('title');
             $table->date('booking_date');
             $table->string('booking_day');
-            $table->integer('book_time_id')->unsigned();
+            $table->integer('book_time_id');
             $table->foreign('book_time_id')->references('id')->on('book_times');
-            $table->integer('meeting_room_id')->unsigned();
+            $table->integer('meeting_room_id');
             $table->foreign('meeting_room_id')->references('id')->on('meeting_rooms');
             $table->softDeletes();
             $table->timestamps();
