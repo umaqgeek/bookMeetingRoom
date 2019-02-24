@@ -26,6 +26,9 @@
     },
     "dependencies": {
         "@cantonjs/react-scroll-view": "^0.4.2",
+        "dateformat": "^3.0.3",
+        "mdbreact": "^4.11.0",
+        "react-date-picker": "^7.2.0",
         "react-router-dom": "^4.3.1"
     }
 }
