@@ -29,4 +29,12 @@ class MeetingRoom extends Model
         'id',
         'description'
     ];
+
+    /**
+     * Get the bookings for the meeting room.
+     */
+    public function bookings()
+    {
+        return $this->hasMany('App\Models\Booking');
+    }
 }

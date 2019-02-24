@@ -29,4 +29,12 @@ class BookTime extends Model
         'id',
         'description'
     ];
+
+    /**
+     * Get the bookings for the book time.
+     */
+    public function bookings()
+    {
+        return $this->hasMany('App\Models\Booking');
+    }
 }
