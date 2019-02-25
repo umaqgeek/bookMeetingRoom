@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "start": "serve -s build",
+    "start1": "serve -s build",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "build1": "./node_modules/.bin/webpack --config node_modules/laravel-mix/setup/webpack.config.js",
     "dev": "npm run development",
