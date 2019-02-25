@@ -1,1 +1,1 @@
-web: vendor/bin/heroku-php-apache2 public/ && npm build
+web: vendor/bin/heroku-php-apache2 public/ && npm run build
