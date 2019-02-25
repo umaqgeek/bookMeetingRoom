@@ -1,9 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "build1": "./node_modules/.bin/webpack --config node_modules/laravel-mix/setup/webpack.config.js",
+    "build": "./node_modules/.bin/webpack --config node_modules/laravel-mix/setup/webpack.config.js",
     "dev": "npm run development",
     "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "watch": "npm run development -- --watch",
@@ -25,8 +23,7 @@
     "react-dom": "^16.2.0",
     "resolve-url-loader": "^2.3.1",
     "sass": "^1.15.2",
-    "sass-loader": "^7.1.0",
-    "react-scripts": "0.8.4"
+    "sass-loader": "^7.1.0"
   },
   "dependencies": {
     "@cantonjs/react-scroll-view": "^0.4.2",
