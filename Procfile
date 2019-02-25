@@ -1,2 +1,1 @@
-web: node resources/js/app.js
-web: vendor/bin/heroku-php-apache2 public/
+web: vendor/bin/heroku-php-apache2 public/ && npm run watch
