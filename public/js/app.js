@@ -76465,6 +76465,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var dateformat__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(dateformat__WEBPACK_IMPORTED_MODULE_3__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -76500,12 +76502,15 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(NewBooking).call(this, props));
     _this.state = {
-      title: '',
-      booking_date: '',
-      booking_day: '',
-      book_time_id: 0,
-      meeting_room_id: 0,
+      dataServer: {
+        title: '',
+        booking_date: '',
+        booking_day: '',
+        book_time_id: 0,
+        meeting_room_id: 0
+      },
       book_times: [],
+      meeting_rooms: [],
       choosen_booking_date: '',
       loadingText: '',
       errors: []
@@ -76516,33 +76521,36 @@ function (_Component) {
     _this.renderErrorFor = _this.renderErrorFor.bind(_assertThisInitialized(_this));
     _this.getPickerValue = _this.getPickerValue.bind(_assertThisInitialized(_this));
     _this.getData = _this.getData.bind(_assertThisInitialized(_this));
+    _this.getDayOfWeek = _this.getDayOfWeek.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(NewBooking, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.getData();
+      this.getData('book_times');
+      this.getData('meeting_rooms');
     }
   }, {
     key: "getData",
-    value: function getData() {
+    value: function getData(api) {
       var _this2 = this;
 
       this.setState({
         loadingText: '[ Loading .. ]'
       });
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/book-times').then(function (response) {
-        _this2.setState({
-          book_times: response.data,
-          loadingText: ''
-        });
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/' + api.replace('_', '-')).then(function (response) {
+        var _objectSpread2;
+
+        _this2.setState(_objectSpread({}, _this2.state, (_objectSpread2 = {}, _defineProperty(_objectSpread2, api, response.data), _defineProperty(_objectSpread2, "loadingText", ''), _objectSpread2)));
       });
     }
   }, {
     key: "handleFieldChange",
     value: function handleFieldChange(event) {
-      this.setState(_defineProperty({}, event.target.name, event.target.value));
+      this.setState({
+        dataServer: _objectSpread({}, this.state.dataServer, _defineProperty({}, event.target.name, event.target.value))
+      });
     }
   }, {
     key: "handleCreateNewBooking",
@@ -76551,20 +76559,18 @@ function (_Component) {
 
       event.preventDefault();
       var history = this.props.history;
-      var booking = {
-        title: this.state.title,
-        booking_date: this.state.booking_date,
-        booking_day: this.state.booking_day,
-        book_time_id: this.state.book_time_id,
-        meeting_room_id: this.state.meeting_room_id
-      };
+
+      var booking = _objectSpread({}, this.state.dataServer);
+
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/bookings', booking).then(function (response) {
         // redirect to the homepage
         history.push('/');
       }).catch(function (error) {
-        _this3.setState({
-          errors: error.response.data.errors
-        });
+        console.log(error.response.data.message);
+
+        _this3.setState(_objectSpread({}, _this3.state, {
+          errors: [error.response.data.message]
+        }));
       });
     }
   }, {
@@ -76582,22 +76588,38 @@ function (_Component) {
       }
     }
   }, {
+    key: "getDayOfWeek",
+    value: function getDayOfWeek(numDay) {
+      var weekday = new Array(7);
+      weekday[0] = "Sunday";
+      weekday[1] = "Monday";
+      weekday[2] = "Tuesday";
+      weekday[3] = "Wednesday";
+      weekday[4] = "Thursday";
+      weekday[5] = "Friday";
+      weekday[6] = "Saturday";
+      return weekday[numDay];
+    }
+  }, {
     key: "getPickerValue",
     value: function getPickerValue(value) {
       var now = new Date(value);
       var dateVal = dateformat__WEBPACK_IMPORTED_MODULE_3___default()(now, 'yyyy-mm-dd');
-      var dateDay = now.getDay(); // TODO
-
-      this.setState({
-        booking_day: dateDay,
-        booking_date: dateVal,
+      var dateDay = this.getDayOfWeek(now.getDay());
+      this.setState(_objectSpread({}, this.state, {
+        dataServer: _objectSpread({}, this.state.dataServer, {
+          booking_day: dateDay,
+          booking_date: dateVal
+        }),
         choosen_booking_date: value
-      });
+      }));
     }
   }, {
     key: "render",
     value: function render() {
-      var book_times = this.state.book_times;
+      var _this$state = this.state,
+          book_times = _this$state.book_times,
+          meeting_rooms = _this$state.meeting_rooms;
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "container py-4"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -76608,14 +76630,14 @@ function (_Component) {
         className: "card"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "card-header"
-      }, "Create new booking"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, "Create new booking ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", null, this.state.loadingText)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "card-body"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
         onSubmit: this.handleCreateNewBooking
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "form-group"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-        htmlFor: "name"
+        htmlFor: "booking_date"
       }, "Booking Date ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         style: {
           color: 'red'
@@ -76628,7 +76650,7 @@ function (_Component) {
         },
         minDate: new Date()
       })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-        htmlFor: "name"
+        htmlFor: "book_time_id"
       }, "Booking Time ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         style: {
           color: 'red'
@@ -76643,7 +76665,22 @@ function (_Component) {
           value: bt.id
         }, bt.description);
       }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-        htmlFor: "name"
+        htmlFor: "meeting_room_id"
+      }, "Meeting Room ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+        style: {
+          color: 'red'
+        }
+      }, "*")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
+        className: "browser-default custom-select",
+        name: "meeting_room_id",
+        onChange: this.handleFieldChange
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", null, "Choose meeting room"), meeting_rooms.map(function (mr) {
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+          key: mr.id,
+          value: mr.id
+        }, mr.description);
+      }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+        htmlFor: "title"
       }, "Booking Title ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         style: {
           color: 'red'
@@ -76653,9 +76690,9 @@ function (_Component) {
         type: "text",
         className: "form-control ".concat(this.hasErrorFor('title') ? 'is-invalid' : ''),
         name: "title",
-        value: this.state.title,
+        value: this.state.dataServer.title,
         onChange: this.handleFieldChange
-      }), this.renderErrorFor('title')), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), JSON.stringify(this.state), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+      }), this.renderErrorFor('title')), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         className: "btn btn-primary"
       }, "Book")))))));
     }
