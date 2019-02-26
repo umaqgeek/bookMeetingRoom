@@ -32,7 +32,9 @@
     "@trendmicro/react-sidenav": "^0.4.5",
     "dateformat": "^3.0.3",
     "mdbreact": "^4.11.0",
+    "react-bootstrap-modal": "^4.2.0",
     "react-date-picker": "^7.2.0",
+    "react-responsive-modal": "^3.6.0",
     "react-router-dom": "^4.3.1"
   }
 }

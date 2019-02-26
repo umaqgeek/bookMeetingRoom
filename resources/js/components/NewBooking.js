@@ -6,6 +6,7 @@ import { isBookingValid } from '../utilities/Validations';
 import { getSqlErrors } from '../utilities/Errors';
 import { getDayOfWeek } from '../utilities/MyFunc';
 import LoadingBadge from './LoadingBadge';
+import ModalBox from './ModalBox';
 
 class NewBooking extends Component {
   constructor (props) {
@@ -22,7 +23,12 @@ class NewBooking extends Component {
       meeting_rooms: [],
       choosen_booking_date: '',
       loadingText: '',
-      errors: []
+      errors: [],
+      boxModal: {
+        isModal: false,
+        message: '',
+        color: ''
+      }
     }
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.hasErrorFor = this.hasErrorFor.bind(this);
@@ -62,26 +68,36 @@ class NewBooking extends Component {
   handleCreateNewBooking (event) {
 
     event.preventDefault()
-
     const { history } = this.props
-
     const booking = {
       ...this.state.dataServer
-    }
-
+    };
     var isValid = isBookingValid(booking);
 
     if (isValid.status) {
       axios.post('/api/bookings', booking)
         .then(response => {
-          // redirect to the homepage
-          history.push('/')
+          history.push('/');
         })
         .catch(error => {
-          alert(getSqlErrors(error.response.data.message));
+          this.setState({
+            ...this.state,
+            boxModal: {
+              isModal: true,
+              message: getSqlErrors(error.response.data.message),
+              color: 'red'
+            }
+          });
         });
     } else {
-      alert(isValid.message);
+      this.setState({
+        ...this.state,
+        boxModal: {
+          isModal: true,
+          message: isValid.message,
+          color: 'red'
+        }
+      });
     }
   };
 
@@ -101,7 +117,7 @@ class NewBooking extends Component {
 
   getPickerValue(value) {
     var dateVal = dateFormat(new Date(value), 'yyyy-mm-dd');
-    var dateDay = getDayOfWeek(now.getDay());
+    var dateDay = getDayOfWeek(new Date(value).getDay());
     this.setState({
       ...this.state,
       dataServer: {
@@ -115,6 +131,18 @@ class NewBooking extends Component {
 
   render () {
     const { book_times, meeting_rooms } = this.state;
+
+    let onCloseModal = () => {
+      this.setState({
+        ...this.state,
+        boxModal: {
+          isModal: false,
+          message: '',
+          color: ''
+        }
+      });
+    };
+
     return (
       <div className='container py-4'>
         <div className='row justify-content-center'>
@@ -124,6 +152,13 @@ class NewBooking extends Component {
               <div className='card-body'>
                 <form method='post' action='#!'>
                   <div className='form-group'>
+
+                    <ModalBox
+                      open={this.state.boxModal.isModal}
+                      message={this.state.boxModal.message}
+                      color={this.state.boxModal.color}
+                      onCloseModal={onCloseModal}
+                    />
 
                     <label htmlFor='booking_date'>Booking Date <span style={{color: 'red'}}>*</span></label>
                     <div>
@@ -169,6 +204,7 @@ class NewBooking extends Component {
                       name='title'
                       value={this.state.dataServer.title}
                       onChange={this.handleFieldChange}
+                      placeholder='Enter booking title here'
                     />
                     {this.renderErrorFor('title')}
 

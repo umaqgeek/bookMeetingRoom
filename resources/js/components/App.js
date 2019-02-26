@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Header from './Header'
+import { PrivateRoute } from './PrivateRoute';
 
 import BookingList from './BookingList';
 import NewBooking from './NewBooking';
@@ -21,7 +22,7 @@ class App extends Component {
             <Switch>
               <Route exact path='/' component={BookingList} />
               <Route exact path='/create' component={NewBooking} />
-              <Route exact path='/:id' component={DetailBooking} />
+              <Route exact path='/detail/:id' component={DetailBooking} />
               <Route exact path='/loginpage' component={LoginPage} />
               <Route component={NoMatch} />
             </Switch>

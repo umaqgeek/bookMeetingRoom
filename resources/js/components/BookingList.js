@@ -63,7 +63,7 @@ class BookingList extends Component {
             <div className='card'>
               <div className='card-body'>
 
-                <Link className='btn btn-primary btn-sm mb-3' to='/create'>
+                <Link className='btn btn-primary mb-2' to='/create'>
                   New booking
                 </Link>
                 <LoadingBadge text={this.state.loadingText} />
@@ -83,7 +83,7 @@ class BookingList extends Component {
                     {searchBookings.map(booking => (
                       <Link
                         className='list-group-item list-group-item-action'
-                        to={`/${booking.id}`}
+                        to={`/detail/${booking.id}`}
                         key={booking.id}
                       >
                         <span style={{ fontSize: '14px' }}>{booking.title}</span> <br />

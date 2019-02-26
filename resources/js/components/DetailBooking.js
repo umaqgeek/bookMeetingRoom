@@ -59,13 +59,37 @@ class DetailBooking extends Component {
         <div className='row justify-content-center'>
           <div className='col-md-8'>
             <div className='card'>
-              <div className='card-header'>{dataServer.title} <LoadingBadge text={this.state.loadingText} /></div>
+              <div className='card-header'>Booking Detail <LoadingBadge text={this.state.loadingText} /></div>
               <div className='card-body'>
 
-                <p>{dataServer.booking_date}</p>
+                <table className='table'>
+                  <tbody>
+                    <tr>
+                      <td>Title</td>
+                      <td>:</td>
+                      <td>{dataServer.title}</td>
+                    </tr>
+                    <tr>
+                      <td>Date</td>
+                      <td>:</td>
+                      <td>{dataServer.booking_date}, {dataServer.booking_day}</td>
+                    </tr>
+                    <tr>
+                      <td>Time</td>
+                      <td>:</td>
+                      <td>{dataServer.book_time.description}</td>
+                    </tr>
+                    <tr>
+                      <td>Meeting Room</td>
+                      <td>:</td>
+                      <td>{dataServer.meeting_room.description}</td>
+                    </tr>
+                    <tr><td colSpan='3'></td></tr>
+                  </tbody>
+                </table>
 
-                <button className='btn btn-primary btn-sm'>
-                  Mark as completed
+                <button className='btn btn-danger'>
+                  Delete
                 </button>
 
                 <hr />
