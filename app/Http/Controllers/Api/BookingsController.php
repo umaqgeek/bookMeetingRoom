@@ -27,7 +27,12 @@ class BookingsController extends Controller
 
     function list($id)
     {
-        return Booking::with(array('bookTime', 'meetingRoom'))->find($id);
+        $booking = Booking::with(array('bookTime', 'meetingRoom'))->find($id);
+        $booking_date = $booking->booking_date;
+        $date = date_create($booking_date);
+        $booking_date = date_format($date, 'd M Y');
+        $booking->booking_date = $booking_date;
+        return $booking;
     }
 
     function store(Request $request)

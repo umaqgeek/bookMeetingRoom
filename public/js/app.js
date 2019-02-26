@@ -76200,6 +76200,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Header */ "./resources/js/components/Header.js");
 /* harmony import */ var _BookingList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./BookingList */ "./resources/js/components/BookingList.js");
 /* harmony import */ var _NewBooking__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./NewBooking */ "./resources/js/components/NewBooking.js");
+/* harmony import */ var _DetailBooking__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./DetailBooking */ "./resources/js/components/DetailBooking.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -76217,6 +76218,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -76246,6 +76248,9 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/create",
         component: _NewBooking__WEBPACK_IMPORTED_MODULE_5__["default"]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+        path: "/:id",
+        component: _DetailBooking__WEBPACK_IMPORTED_MODULE_6__["default"]
       })))));
     }
   }]);
@@ -76272,6 +76277,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 /* harmony import */ var _cantonjs_react_scroll_view__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @cantonjs/react-scroll-view */ "./node_modules/@cantonjs/react-scroll-view/es/index.js");
+/* harmony import */ var _LoadingBadge__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./LoadingBadge */ "./resources/js/components/LoadingBadge.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -76289,6 +76295,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -76377,7 +76384,9 @@ function (_Component) {
         className: "form-group"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
         htmlFor: "formGroupExampleInput"
-      }, "Search booking ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", null, this.state.loadingText)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+      }, "Search booking ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_LoadingBadge__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        text: this.state.loadingText
+      }), " "), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         type: "text",
         className: "form-control",
         id: "bookSearch",
@@ -76417,6 +76426,133 @@ function (_Component) {
 
 /***/ }),
 
+/***/ "./resources/js/components/DetailBooking.js":
+/*!**************************************************!*\
+  !*** ./resources/js/components/DetailBooking.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utilities_MyFunc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utilities/MyFunc */ "./resources/js/utilities/MyFunc.js");
+/* harmony import */ var _LoadingBadge__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./LoadingBadge */ "./resources/js/components/LoadingBadge.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+var DetailBooking =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(DetailBooking, _Component);
+
+  function DetailBooking(props) {
+    var _this;
+
+    _classCallCheck(this, DetailBooking);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(DetailBooking).call(this, props));
+    _this.state = {
+      dataServer: {
+        title: '',
+        booking_date: '',
+        booking_day: '',
+        book_time: {
+          id: 0,
+          description: ''
+        },
+        meeting_room: {
+          id: 0,
+          description: ''
+        }
+      },
+      loadingText: ''
+    };
+    return _this;
+  }
+
+  _createClass(DetailBooking, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      var bookingId = this.props.match.params.id;
+      this.setState({
+        loadingText: '[ Loading .. ]'
+      });
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/bookings/".concat(bookingId)).then(function (response) {
+        _this2.setState({
+          dataServer: {
+            title: response.data.title,
+            booking_date: response.data.booking_date,
+            booking_day: response.data.booking_day,
+            book_time: {
+              id: response.data.book_time.id,
+              description: response.data.book_time.id
+            },
+            meeting_room: {
+              id: response.data.meeting_room.id,
+              description: response.data.meeting_room.description
+            }
+          },
+          loadingText: ''
+        });
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var dataServer = this.state.dataServer;
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "container py-4"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "row justify-content-center"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "col-md-8"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "card"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "card-header"
+      }, dataServer.title, " ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_LoadingBadge__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        text: this.state.loadingText
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "card-body"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, dataServer.booking_date), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        className: "btn btn-primary btn-sm"
+      }, "Mark as completed"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null))))));
+    }
+  }]);
+
+  return DetailBooking;
+}(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (DetailBooking);
+
+/***/ }),
+
 /***/ "./resources/js/components/Header.js":
 /*!*******************************************!*\
   !*** ./resources/js/components/Header.js ***!
@@ -76447,6 +76583,63 @@ var Header = function Header() {
 
 /***/ }),
 
+/***/ "./resources/js/components/LoadingBadge.js":
+/*!*************************************************!*\
+  !*** ./resources/js/components/LoadingBadge.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+var LoadingBadge =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(LoadingBadge, _Component);
+
+  function LoadingBadge() {
+    _classCallCheck(this, LoadingBadge);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(LoadingBadge).apply(this, arguments));
+  }
+
+  _createClass(LoadingBadge, [{
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, this.props.text);
+    }
+  }]);
+
+  return LoadingBadge;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+;
+/* harmony default export */ __webpack_exports__["default"] = (LoadingBadge);
+
+/***/ }),
+
 /***/ "./resources/js/components/NewBooking.js":
 /*!***********************************************!*\
   !*** ./resources/js/components/NewBooking.js ***!
@@ -76464,6 +76657,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_date_picker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_date_picker__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var dateformat__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! dateformat */ "./node_modules/dateformat/lib/dateformat.js");
 /* harmony import */ var dateformat__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(dateformat__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _utilities_Validations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utilities/Validations */ "./resources/js/utilities/Validations.js");
+/* harmony import */ var _utilities_Errors__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utilities/Errors */ "./resources/js/utilities/Errors.js");
+/* harmony import */ var _utilities_MyFunc__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utilities/MyFunc */ "./resources/js/utilities/MyFunc.js");
+/* harmony import */ var _LoadingBadge__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./LoadingBadge */ "./resources/js/components/LoadingBadge.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
@@ -76485,6 +76682,10 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
 
 
 
@@ -76522,7 +76723,6 @@ function (_Component) {
     _this.renderErrorFor = _this.renderErrorFor.bind(_assertThisInitialized(_this));
     _this.getPickerValue = _this.getPickerValue.bind(_assertThisInitialized(_this));
     _this.getData = _this.getData.bind(_assertThisInitialized(_this));
-    _this.getDayOfWeek = _this.getDayOfWeek.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -76556,23 +76756,23 @@ function (_Component) {
   }, {
     key: "handleCreateNewBooking",
     value: function handleCreateNewBooking(event) {
-      var _this3 = this;
-
       event.preventDefault();
       var history = this.props.history;
 
       var booking = _objectSpread({}, this.state.dataServer);
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/bookings', booking).then(function (response) {
-        // redirect to the homepage
-        history.push('/');
-      }).catch(function (error) {
-        console.log(error.response.data.message);
+      var isValid = Object(_utilities_Validations__WEBPACK_IMPORTED_MODULE_4__["isBookingValid"])(booking);
 
-        _this3.setState(_objectSpread({}, _this3.state, {
-          errors: [error.response.data.message]
-        }));
-      });
+      if (isValid.status) {
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/bookings', booking).then(function (response) {
+          // redirect to the homepage
+          history.push('/');
+        }).catch(function (error) {
+          alert(Object(_utilities_Errors__WEBPACK_IMPORTED_MODULE_5__["getSqlErrors"])(error.response.data.message));
+        });
+      } else {
+        alert(isValid.message);
+      }
     }
   }, {
     key: "hasErrorFor",
@@ -76589,24 +76789,10 @@ function (_Component) {
       }
     }
   }, {
-    key: "getDayOfWeek",
-    value: function getDayOfWeek(numDay) {
-      var weekday = new Array(7);
-      weekday[0] = "Sunday";
-      weekday[1] = "Monday";
-      weekday[2] = "Tuesday";
-      weekday[3] = "Wednesday";
-      weekday[4] = "Thursday";
-      weekday[5] = "Friday";
-      weekday[6] = "Saturday";
-      return weekday[numDay];
-    }
-  }, {
     key: "getPickerValue",
     value: function getPickerValue(value) {
-      var now = new Date(value);
-      var dateVal = dateformat__WEBPACK_IMPORTED_MODULE_3___default()(now, 'yyyy-mm-dd');
-      var dateDay = this.getDayOfWeek(now.getDay());
+      var dateVal = dateformat__WEBPACK_IMPORTED_MODULE_3___default()(new Date(value), 'yyyy-mm-dd');
+      var dateDay = Object(_utilities_MyFunc__WEBPACK_IMPORTED_MODULE_6__["getDayOfWeek"])(now.getDay());
       this.setState(_objectSpread({}, this.state, {
         dataServer: _objectSpread({}, this.state.dataServer, {
           booking_day: dateDay,
@@ -76631,10 +76817,13 @@ function (_Component) {
         className: "card"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "card-header"
-      }, "Create new booking ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", null, this.state.loadingText)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, "Create new booking ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_LoadingBadge__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        text: this.state.loadingText
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "card-body"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
-        onSubmit: this.handleCreateNewBooking
+        method: "post",
+        action: "#!"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "form-group"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
@@ -76694,6 +76883,8 @@ function (_Component) {
         value: this.state.dataServer.title,
         onChange: this.handleFieldChange
       }), this.renderErrorFor('title')), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        type: "button",
+        onClick: this.handleCreateNewBooking,
         className: "btn btn-primary"
       }, "Book")))))));
     }
@@ -76704,6 +76895,102 @@ function (_Component) {
 
 ;
 /* harmony default export */ __webpack_exports__["default"] = (NewBooking);
+
+/***/ }),
+
+/***/ "./resources/js/utilities/Errors.js":
+/*!******************************************!*\
+  !*** ./resources/js/utilities/Errors.js ***!
+  \******************************************/
+/*! exports provided: getSqlErrors */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSqlErrors", function() { return getSqlErrors; });
+var getSqlErrors = function getSqlErrors(sqlErrorMessage) {
+  if (sqlErrorMessage.toLowerCase().includes('SQLSTATE[23000]'.toLowerCase())) {
+    return 'Duplicate data';
+  }
+
+  return 'Server error';
+};
+
+/***/ }),
+
+/***/ "./resources/js/utilities/MyFunc.js":
+/*!******************************************!*\
+  !*** ./resources/js/utilities/MyFunc.js ***!
+  \******************************************/
+/*! exports provided: test, getDayOfWeek */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "test", function() { return test; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDayOfWeek", function() { return getDayOfWeek; });
+var test = function test() {
+  return 'Wazzup world';
+};
+var getDayOfWeek = function getDayOfWeek(numDay) {
+  var weekday = new Array(7);
+  weekday[0] = "Sunday";
+  weekday[1] = "Monday";
+  weekday[2] = "Tuesday";
+  weekday[3] = "Wednesday";
+  weekday[4] = "Thursday";
+  weekday[5] = "Friday";
+  weekday[6] = "Saturday";
+  return weekday[numDay];
+};
+
+/***/ }),
+
+/***/ "./resources/js/utilities/Validations.js":
+/*!***********************************************!*\
+  !*** ./resources/js/utilities/Validations.js ***!
+  \***********************************************/
+/*! exports provided: isBookingValid */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isBookingValid", function() { return isBookingValid; });
+var isBookingValid = function isBookingValid(booking) {
+  var obj = {
+    status: true,
+    message: ''
+  };
+  /**
+  title: '',
+  booking_date: '',
+  booking_day: '',
+  book_time_id: 0,
+  meeting_room_id: 0
+  */
+
+  if (booking.title === '' && obj.status) {
+    obj.status = false;
+    obj.message = 'Do not leave blank title';
+  }
+
+  if ((booking.booking_date === '' || booking.booking_day === '') && obj.status) {
+    obj.status = false;
+    obj.message = 'Do not leave blank booking date and day';
+  }
+
+  if ((booking.book_time_id === '' || booking.book_time_id == 0) && obj.status) {
+    obj.status = false;
+    obj.message = 'Do not leave blank booking time';
+  }
+
+  if ((booking.meeting_room_id === '' || booking.meeting_room_id == 0) && obj.status) {
+    obj.status = false;
+    obj.message = 'Do not leave blank meeting room';
+  }
+
+  return obj;
+};
 
 /***/ }),
 

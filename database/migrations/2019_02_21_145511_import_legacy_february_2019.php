@@ -73,6 +73,7 @@ class ImportLegacyFebruary2019 extends Migration
             $table->integer('meeting_room_id');
             $table->foreign('meeting_room_id')->references('id')->on('meeting_rooms');
             $table->softDeletes();
+            $table->unique(['booking_date', 'book_time_id', 'meeting_room_id']);
             $table->timestamps();
         });
     }

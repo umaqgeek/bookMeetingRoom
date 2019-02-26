@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { ScrollView } from '@cantonjs/react-scroll-view'
+import LoadingBadge from './LoadingBadge';
 
 class BookingList extends Component {
   constructor () {
@@ -67,7 +68,7 @@ class BookingList extends Component {
                 </Link>
 
                 <div className="form-group">
-                  <label htmlFor="formGroupExampleInput">Search booking <span>{this.state.loadingText}</span></label>
+                  <label htmlFor="formGroupExampleInput">Search booking <LoadingBadge text={this.state.loadingText} /> </label>
                   <input
                     type="text"
                     className="form-control"

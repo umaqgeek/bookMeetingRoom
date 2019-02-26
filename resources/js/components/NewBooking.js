@@ -2,6 +2,10 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import DatePicker from 'react-date-picker';
 import dateFormat from 'dateformat';
+import { isBookingValid } from '../utilities/Validations';
+import { getSqlErrors } from '../utilities/Errors';
+import { getDayOfWeek } from '../utilities/MyFunc';
+import LoadingBadge from './LoadingBadge';
 
 class NewBooking extends Component {
   constructor (props) {
@@ -26,7 +30,6 @@ class NewBooking extends Component {
     this.renderErrorFor = this.renderErrorFor.bind(this);
     this.getPickerValue = this.getPickerValue.bind(this);
     this.getData = this.getData.bind(this);
-    this.getDayOfWeek = this.getDayOfWeek.bind(this);
   }
 
   componentDidMount() {
@@ -57,6 +60,7 @@ class NewBooking extends Component {
   }
 
   handleCreateNewBooking (event) {
+
     event.preventDefault()
 
     const { history } = this.props
@@ -65,18 +69,20 @@ class NewBooking extends Component {
       ...this.state.dataServer
     }
 
-    axios.post('/api/bookings', booking)
-      .then(response => {
-        // redirect to the homepage
-        history.push('/')
-      })
-      .catch(error => {
-        console.log(error.response.data.message);
-        this.setState({
-          ...this.state,
-          errors: [error.response.data.message]
+    var isValid = isBookingValid(booking);
+
+    if (isValid.status) {
+      axios.post('/api/bookings', booking)
+        .then(response => {
+          // redirect to the homepage
+          history.push('/')
+        })
+        .catch(error => {
+          alert(getSqlErrors(error.response.data.message));
         });
-      });
+    } else {
+      alert(isValid.message);
+    }
   };
 
   hasErrorFor (field) {
@@ -93,22 +99,9 @@ class NewBooking extends Component {
     }
   };
 
-  getDayOfWeek(numDay) {
-    var weekday = new Array(7);
-    weekday[0] = "Sunday";
-    weekday[1] = "Monday";
-    weekday[2] = "Tuesday";
-    weekday[3] = "Wednesday";
-    weekday[4] = "Thursday";
-    weekday[5] = "Friday";
-    weekday[6] = "Saturday";
-    return weekday[numDay];
-  };
-
   getPickerValue(value) {
-    var now = new Date(value);
-    var dateVal = dateFormat(now, 'yyyy-mm-dd');
-    var dateDay = this.getDayOfWeek(now.getDay());
+    var dateVal = dateFormat(new Date(value), 'yyyy-mm-dd');
+    var dateDay = getDayOfWeek(now.getDay());
     this.setState({
       ...this.state,
       dataServer: {
@@ -127,9 +120,9 @@ class NewBooking extends Component {
         <div className='row justify-content-center'>
           <div className='col-md-6'>
             <div className='card'>
-              <div className='card-header'>Create new booking <span>{this.state.loadingText}</span></div>
+              <div className='card-header'>Create new booking <LoadingBadge text={this.state.loadingText} /></div>
               <div className='card-body'>
-                <form onSubmit={this.handleCreateNewBooking}>
+                <form method='post' action='#!'>
                   <div className='form-group'>
 
                     <label htmlFor='booking_date'>Booking Date <span style={{color: 'red'}}>*</span></label>
@@ -181,7 +174,7 @@ class NewBooking extends Component {
 
                   </div>
 
-                  <button className='btn btn-primary'>Book</button>
+                  <button type='button' onClick={this.handleCreateNewBooking} className='btn btn-primary'>Book</button>
                 </form>
               </div>
             </div>
