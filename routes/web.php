@@ -11,4 +11,4 @@
 |
 */
 
-Route::view('/', 'app');
+Route::view('/{path?}', 'app');
