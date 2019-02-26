@@ -49,6 +49,7 @@ class ImportLegacyFebruary2019 extends Migration
             $tNew['booking_day'] = $t['t_day'];
             $tNew['book_time_id'] = $t['m_id'];
             $tNew['meeting_room_id'] = $t['bm_id'];
+            $tNew['approved'] = 0;
 
             Booking::create($tNew);
         }
@@ -74,6 +75,7 @@ class ImportLegacyFebruary2019 extends Migration
             $table->foreign('meeting_room_id')->references('id')->on('meeting_rooms');
             $table->softDeletes();
             $table->unique(['booking_date', 'book_time_id', 'meeting_room_id']);
+            $table->integer('approved')->nullable()->default(0);
             $table->timestamps();
         });
     }

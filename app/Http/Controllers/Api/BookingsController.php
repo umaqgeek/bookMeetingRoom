@@ -9,9 +9,11 @@ use App\Models\Booking;
 
 class BookingsController extends Controller
 {
-    function listAll()
+    function listAll(Request $req)
     {
+        $approved = isset($req->approved) ? $req->approved : 1;
         $bookings = Booking::with(array('bookTime', 'meetingRoom'))
+          ->where('approved', $approved)
           ->orderBy('booking_date', 'ASC')
           ->orderBy('book_time_id', 'ASC')
           ->orderBy('meeting_room_id', 'ASC')

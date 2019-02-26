@@ -66,18 +66,19 @@ class BookingList extends Component {
                 <Link className='btn btn-primary btn-sm mb-3' to='/create'>
                   New booking
                 </Link>
+                <LoadingBadge text={this.state.loadingText} />
 
                 <div className="form-group">
-                  <label htmlFor="formGroupExampleInput">Search booking <LoadingBadge text={this.state.loadingText} /> </label>
                   <input
                     type="text"
                     className="form-control"
                     id="bookSearch"
+                    placeholder="Search here"
                     onChange={this.searchHandler}
                   />
                 </div>
 
-                <ScrollView style={{ height: screen.height * 0.6 }}>
+                <ScrollView style={{ height: screen.height * 0.5 }}>
                   <ul className='list-group'>
                     {searchBookings.map(booking => (
                       <Link

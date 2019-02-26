@@ -24,6 +24,7 @@ class CreateBookingsTable extends Migration
             $table->foreign('meeting_room_id')->references('id')->on('meeting_rooms');
             $table->softDeletes();
             $table->unique(['booking_date', 'book_time_id', 'meeting_room_id']);
+            $table->integer('approved')->nullable()->default(0);
             $table->timestamps();
         });
     }

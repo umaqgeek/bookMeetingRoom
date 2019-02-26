@@ -174,7 +174,7 @@ class NewBooking extends Component {
 
                   </div>
 
-                  <button type='button' onClick={this.handleCreateNewBooking} className='btn btn-primary'>Book</button>
+                  <button type='button' onClick={this.handleCreateNewBooking} className='btn btn-success'>Book</button>
                 </form>
               </div>
             </div>
