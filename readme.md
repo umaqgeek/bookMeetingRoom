@@ -11,6 +11,7 @@ $ composer install
 ### 1.2. Laravel installation
 ```
 $ php artisan db:create
+$ php artisan passport:install
 $ php artisan migrate
 ```
 

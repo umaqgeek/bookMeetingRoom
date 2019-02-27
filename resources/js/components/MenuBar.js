@@ -11,7 +11,9 @@ class MenuBar extends Component {
                 <Link to='/'>
                   <button className='btn btn-success'>Home</button>
                 </Link>
-                <span> </span>
+
+                <span className='mr-2'></span>
+
                 <Link to='/loginpage'>
                   <button className='btn btn-primary'>Manage</button>
                 </Link>

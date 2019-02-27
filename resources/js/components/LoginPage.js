@@ -16,7 +16,7 @@ class LoginPage extends Component {
   };
 
   onAuthCode() {
-    console.log('haha');
+    console.log(this.state.dataServer);
   };
 
   handleFieldChange (event) {
