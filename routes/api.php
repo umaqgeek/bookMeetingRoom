@@ -30,3 +30,5 @@ Route::get('/bookings/{id}', 'BookingsController@list');
 Route::post('/bookings', 'BookingsController@store');
 Route::put('/bookings/{id}', 'BookingsController@save');
 Route::delete('/bookings/{id}', 'BookingsController@delete');
+Route::put('/approve-booking/{id}', 'BookingsController@approveOrReject');
+Route::put('/approve-booking-all', 'BookingsController@approveOrRejectAll');

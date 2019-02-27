@@ -21,7 +21,8 @@ class Booking extends Model
         'booking_date',
         'booking_day',
         'book_time_id',
-        'meeting_room_id'
+        'meeting_room_id',
+        'approved'
     ];
 
     /**

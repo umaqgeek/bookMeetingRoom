@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { getDayOfWeek } from '../utilities/MyFunc';
 import LoadingBadge from './LoadingBadge';
+import { Link } from 'react-router-dom';
 
 class DetailBooking extends Component {
   constructor (props) {
@@ -79,8 +80,6 @@ class DetailBooking extends Component {
   render () {
     const { dataServer } = this.state;
 
-    console.log(dataServer);
-
     return (
       <div className='container py-4'>
         <div className='row justify-content-center'>
@@ -88,6 +87,10 @@ class DetailBooking extends Component {
             <div className='card'>
               <div className='card-header'>Booking Detail <LoadingBadge text={this.state.loadingText} /></div>
               <div className='card-body'>
+
+                <Link to='/'>
+                  <button type='button' className='btn btn-primary mb-3'>Back</button>
+                </Link>
 
                 <table className='table'>
                   <tbody>

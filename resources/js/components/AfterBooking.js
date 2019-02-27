@@ -4,7 +4,7 @@ import LoadingBadge from './LoadingBadge';
 import ModalBox from './ModalBox';
 import { getSqlErrors } from '../utilities/Errors';
 
-class LogoutPage extends Component {
+class AfterBooking extends Component {
 
   constructor(props) {
     super(props);
@@ -12,12 +12,10 @@ class LogoutPage extends Component {
       loadingText: '',
       boxModal: {
         isModal: true,
-        message: 'You have logout',
+        message: 'Your booking has been saved. It will be pending.',
         color: 'green'
       }
     };
-
-    localStorage.removeItem('authToken');
   };
 
   render() {
@@ -61,4 +59,4 @@ class LogoutPage extends Component {
   };
 };
 
-export default LogoutPage;
+export default AfterBooking;

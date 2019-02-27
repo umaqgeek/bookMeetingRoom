@@ -32,7 +32,7 @@ class ManageList extends Component {
     this.setState({
       loadingText: '[ Loading .. ]'
     });
-    axios.get('/api/bookings?approved=0').then(response => {
+    axios.get('/api/bookings?approved=all').then(response => {
       this.setState({
         bookings: response.data,
         searchBookings: response.data,
@@ -51,6 +51,8 @@ class ManageList extends Component {
           || d.booking_day.toLowerCase().includes(txt.toLowerCase())
           || d.book_time.description.toLowerCase().includes(txt.toLowerCase())
           || d.meeting_room.description.toLowerCase().includes(txt.toLowerCase())
+          || (d.approved == '1' && 'approved'.toLowerCase().includes(txt.toLowerCase()))
+          || (d.approved == '0' && 'pending'.toLowerCase().includes(txt.toLowerCase()))
       });
       this.setState({
         searchBookings: searchArr
@@ -92,7 +94,10 @@ class ManageList extends Component {
                       >
                         <span style={{ fontSize: '14px' }}>{booking.title}</span> <br />
                         <span style={{ fontSize: '10px' }}>{booking.booking_date + ', ' + booking.booking_day + ', ' + booking.book_time.description}</span> <br />
-                        <span style={{ fontSize: '12px' }}>{booking.meeting_room.description}</span> <br />
+                        <span style={{ fontSize: '12px' }}>{booking.meeting_room.description} <span className='mr-5'> </span>
+                          {booking.approved == 1 ?
+                            (<strong style={{color: 'green'}}>Approved</strong>) :
+                            (<strong style={{color: 'red'}}>Pending</strong>)}</span>
                       </Link>
                     ))}
                   </ul>

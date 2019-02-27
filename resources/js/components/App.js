@@ -13,6 +13,7 @@ import LogoutPage from './LogoutPage';
 import NoMatch from './NoMatch';
 import ManageList from './ManageList';
 import ManageDetailList from './ManageDetailList';
+import AfterBooking from './AfterBooking';
 
 class App extends Component {
   render () {
@@ -28,6 +29,7 @@ class App extends Component {
               <Route exact path='/detail/:id' component={DetailBooking} />
               <Route exact path='/loginpage' component={LoginPage} />
               <Route exact path='/logoutpage' component={LogoutPage} />
+              <Route exact path='/afterbooking' component={AfterBooking} />
               <PrivateRoute exect path='/detailmanage/:id' component={ManageDetailList} />
               <PrivateRoute exect path='/managelist' component={ManageList} />
               <Route component={NoMatch} />

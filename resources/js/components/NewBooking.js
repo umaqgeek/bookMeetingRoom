@@ -105,7 +105,7 @@ class NewBooking extends Component {
     if (isValid.status) {
       axios.post('/api/bookings', booking)
         .then(response => {
-          history.push('/');
+          history.push('/afterbooking');
         })
         .catch(error => {
           this.setState({

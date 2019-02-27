@@ -12,8 +12,13 @@ class BookingsController extends Controller
     function listAll(Request $req)
     {
         $approved = isset($req->approved) ? $req->approved : 1;
-        $bookings = Booking::with(array('bookTime', 'meetingRoom'))
-          ->where('approved', $approved)
+        $bookings = Booking::with(array('bookTime', 'meetingRoom'));
+
+        if (in_array($approved, ['1', '0'])) {
+            $bookings = $bookings->where('approved', $approved);
+        }
+
+        $bookings = $bookings
           ->orderBy('booking_date', 'ASC')
           ->orderBy('book_time_id', 'ASC')
           ->orderBy('meeting_room_id', 'ASC')
@@ -46,6 +51,7 @@ class BookingsController extends Controller
     {
         $booking = Booking::findOrFail($id);
         $booking->update($request->all());
+        $booking->save();
 
         return $booking;
     }
@@ -53,7 +59,26 @@ class BookingsController extends Controller
     function delete($id)
     {
         Booking::findOrFail($id)->delete();
-
         return 204;
+    }
+
+    function approveOrReject(Request $request, $id)
+    {
+        // return $request->approved;
+        $booking = Booking::findOrFail($id);
+        $booking->update([
+          'approved' => isset($request->approved) ? $request->approved : 0
+        ]);
+
+        return $booking;
+    }
+
+    function approveOrRejectAll(Request $request)
+    {
+        Booking::whereRaw('1=1')->update([
+          'approved' => isset($request->approved) ? $request->approved : 0
+        ]);
+
+        return '200';
     }
 }
