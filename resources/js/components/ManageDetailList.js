@@ -2,8 +2,9 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { getDayOfWeek } from '../utilities/MyFunc';
 import LoadingBadge from './LoadingBadge';
+import { Link } from 'react-router-dom';
 
-class DetailBooking extends Component {
+class ManageDetailList extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -21,12 +22,6 @@ class DetailBooking extends Component {
         }
       },
       loadingText: ''
-    }
-
-    // redirect page to manage list if already login.
-    const { history } = this.props;
-    if (localStorage.getItem('authToken')) {
-      history.push('/managelist');
     }
   }
 
@@ -89,6 +84,10 @@ class DetailBooking extends Component {
               <div className='card-header'>Booking Detail <LoadingBadge text={this.state.loadingText} /></div>
               <div className='card-body'>
 
+                <Link to='/managelist'>
+                  <button type='button' className='btn btn-primary mb-3'>Back</button>
+                </Link>
+
                 <table className='table'>
                   <tbody>
                     <tr>
@@ -116,6 +115,10 @@ class DetailBooking extends Component {
 
                 <hr />
 
+                <button type='button' className='btn btn-success'>Approve</button>
+                <span className='mr-2'></span>
+                <button type='button' className='btn btn-danger'>Delete</button>
+
               </div>
             </div>
           </div>
@@ -125,4 +128,4 @@ class DetailBooking extends Component {
   }
 }
 
-export default DetailBooking
+export default ManageDetailList

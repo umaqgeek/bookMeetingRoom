@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'
 import { ScrollView } from '@cantonjs/react-scroll-view'
 import LoadingBadge from './LoadingBadge';
 
-class BookingList extends Component {
-  constructor (props) {
-    super(props)
+class ManageList extends Component {
+  constructor () {
+    super()
     this.state = {
       bookings: [],
       searchBookings: [],
@@ -14,12 +14,6 @@ class BookingList extends Component {
     }
     this.searchHandler = this.searchHandler.bind(this);
     this.getData = this.getData.bind(this);
-
-    // redirect page to manage list if already login.
-    const { history } = this.props;
-    if (localStorage.getItem('authToken')) {
-      history.push('/managelist');
-    }
   }
 
   componentWillUnmount() {
@@ -38,7 +32,7 @@ class BookingList extends Component {
     this.setState({
       loadingText: '[ Loading .. ]'
     });
-    axios.get('/api/bookings').then(response => {
+    axios.get('/api/bookings?approved=0').then(response => {
       this.setState({
         bookings: response.data,
         searchBookings: response.data,
@@ -75,12 +69,8 @@ class BookingList extends Component {
         <div className='row justify-content-center'>
           <div className='col-md-8'>
             <div className='card'>
+              <div className='card-header'>Manage Pending List <LoadingBadge text={this.state.loadingText} /></div>
               <div className='card-body'>
-
-                <Link className='btn btn-primary mb-2' to='/create'>
-                  New booking
-                </Link>
-                <LoadingBadge text={this.state.loadingText} />
 
                 <div className="form-group">
                   <input
@@ -97,7 +87,7 @@ class BookingList extends Component {
                     {searchBookings.map(booking => (
                       <Link
                         className='list-group-item list-group-item-action'
-                        to={`/detail/${booking.id}`}
+                        to={`/detailmanage/${booking.id}`}
                         key={booking.id}
                       >
                         <span style={{ fontSize: '14px' }}>{booking.title}</span> <br />
@@ -117,4 +107,4 @@ class BookingList extends Component {
   }
 }
 
-export default BookingList
+export default ManageList

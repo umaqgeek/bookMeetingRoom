@@ -78791,7 +78791,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _DetailBooking__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./DetailBooking */ "./resources/js/components/DetailBooking.js");
 /* harmony import */ var _MenuBar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./MenuBar */ "./resources/js/components/MenuBar.js");
 /* harmony import */ var _LoginPage__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./LoginPage */ "./resources/js/components/LoginPage.js");
-/* harmony import */ var _NoMatch__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./NoMatch */ "./resources/js/components/NoMatch.js");
+/* harmony import */ var _LogoutPage__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./LogoutPage */ "./resources/js/components/LogoutPage.js");
+/* harmony import */ var _NoMatch__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./NoMatch */ "./resources/js/components/NoMatch.js");
+/* harmony import */ var _ManageList__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./ManageList */ "./resources/js/components/ManageList.js");
+/* harmony import */ var _ManageDetailList__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./ManageDetailList */ "./resources/js/components/ManageDetailList.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -78809,6 +78812,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
 
 
 
@@ -78853,7 +78859,19 @@ function (_Component) {
         path: "/loginpage",
         component: _LoginPage__WEBPACK_IMPORTED_MODULE_9__["default"]
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-        component: _NoMatch__WEBPACK_IMPORTED_MODULE_10__["default"]
+        exact: true,
+        path: "/logoutpage",
+        component: _LogoutPage__WEBPACK_IMPORTED_MODULE_10__["default"]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PrivateRoute__WEBPACK_IMPORTED_MODULE_4__["PrivateRoute"], {
+        exect: true,
+        path: "/detailmanage/:id",
+        component: _ManageDetailList__WEBPACK_IMPORTED_MODULE_14__["default"]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PrivateRoute__WEBPACK_IMPORTED_MODULE_4__["PrivateRoute"], {
+        exect: true,
+        path: "/managelist",
+        component: _ManageList__WEBPACK_IMPORTED_MODULE_12__["default"]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+        component: _NoMatch__WEBPACK_IMPORTED_MODULE_11__["default"]
       })))));
     }
   }]);
@@ -78910,23 +78928,39 @@ var BookingList =
 function (_Component) {
   _inherits(BookingList, _Component);
 
-  function BookingList() {
+  function BookingList(props) {
     var _this;
 
     _classCallCheck(this, BookingList);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(BookingList).call(this));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(BookingList).call(this, props));
     _this.state = {
       bookings: [],
       searchBookings: [],
       loadingText: ''
     };
     _this.searchHandler = _this.searchHandler.bind(_assertThisInitialized(_this));
-    _this.getData = _this.getData.bind(_assertThisInitialized(_this));
+    _this.getData = _this.getData.bind(_assertThisInitialized(_this)); // redirect page to manage list if already login.
+
+    var history = _this.props.history;
+
+    if (localStorage.getItem('authToken')) {
+      history.push('/managelist');
+    }
+
     return _this;
   }
 
   _createClass(BookingList, [{
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.setState({
+        bookings: [],
+        searchBookings: [],
+        loadingText: ''
+      });
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.getData();
@@ -79091,12 +79125,39 @@ function (_Component) {
           description: ''
         }
       },
-      loadingText: ''
+      loadingText: '' // redirect page to manage list if already login.
+
     };
+    var history = _this.props.history;
+
+    if (localStorage.getItem('authToken')) {
+      history.push('/managelist');
+    }
+
     return _this;
   }
 
   _createClass(DetailBooking, [{
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.setState({
+        dataServer: {
+          title: '',
+          booking_date: '',
+          booking_day: '',
+          book_time: {
+            id: 0,
+            description: ''
+          },
+          meeting_room: {
+            id: 0,
+            description: ''
+          }
+        },
+        loadingText: ''
+      });
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       var _this2 = this;
@@ -79113,7 +79174,7 @@ function (_Component) {
             booking_day: response.data.booking_day,
             book_time: {
               id: response.data.book_time.id,
-              description: response.data.book_time.id
+              description: response.data.book_time.description
             },
             meeting_room: {
               id: response.data.meeting_room.id,
@@ -79128,6 +79189,7 @@ function (_Component) {
     key: "render",
     value: function render() {
       var dataServer = this.state.dataServer;
+      console.log(dataServer);
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "container py-4"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -79144,11 +79206,7 @@ function (_Component) {
         className: "card-body"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("table", {
         className: "table"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Title"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, ":"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, dataServer.title)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Date"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, ":"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, dataServer.booking_date, ", ", dataServer.booking_day)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Time"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, ":"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, dataServer.book_time.description)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Meeting Room"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, ":"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, dataServer.meeting_room.description)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", {
-        colSpan: "3"
-      })))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        className: "btn btn-danger"
-      }, "Delete"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null))))));
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Title"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, ":"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, dataServer.title)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Date"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, ":"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, dataServer.booking_date, ", ", dataServer.booking_day)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Time"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, ":"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, dataServer.book_time.description)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Meeting Room"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, ":"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, dataServer.meeting_room.description)))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null))))));
     }
   }]);
 
@@ -79264,6 +79322,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _LoadingBadge__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./LoadingBadge */ "./resources/js/components/LoadingBadge.js");
+/* harmony import */ var _ModalBox__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ModalBox */ "./resources/js/components/ModalBox.js");
+/* harmony import */ var _utilities_Errors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utilities/Errors */ "./resources/js/utilities/Errors.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
@@ -79290,6 +79350,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
+
 var LoginPage =
 /*#__PURE__*/
 function (_Component) {
@@ -79305,17 +79367,49 @@ function (_Component) {
       dataServer: {
         authCode: ''
       },
-      loadingText: ''
+      loadingText: '',
+      boxModal: {
+        isModal: false,
+        message: '',
+        color: ''
+      }
     };
     _this.handleFieldChange = _this.handleFieldChange.bind(_assertThisInitialized(_this));
-    _this.onAuthCode = _this.onAuthCode.bind(_assertThisInitialized(_this));
+    _this.onAuthCode = _this.onAuthCode.bind(_assertThisInitialized(_this)); // redirect page to manage list if already login.
+
+    var history = _this.props.history;
+
+    if (localStorage.getItem('authToken')) {
+      history.push('/managelist');
+    }
+
     return _this;
   }
 
   _createClass(LoginPage, [{
     key: "onAuthCode",
     value: function onAuthCode() {
-      console.log(this.state.dataServer);
+      var _this2 = this;
+
+      var history = this.props.history;
+      var auth = {
+        email: 'umaqgeek@gmail.com',
+        password: this.state.dataServer.authCode
+      };
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/loginApi', auth).then(function (response) {
+        localStorage.setItem('authToken', response.data.success.token);
+        history.push('/managelist');
+      }).catch(function (error) {
+        console.log(error);
+
+        _this2.setState(_objectSpread({}, _this2.state, {
+          boxModal: {
+            isModal: true,
+            message: Object(_utilities_Errors__WEBPACK_IMPORTED_MODULE_4__["getSqlErrors"])(error.response.data.error),
+            color: 'red'
+          }
+        }));
+      });
     }
   }, {
     key: "handleFieldChange",
@@ -79327,6 +79421,18 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this3 = this;
+
+      var onCloseModal = function onCloseModal() {
+        _this3.setState(_objectSpread({}, _this3.state, {
+          boxModal: {
+            isModal: false,
+            message: '',
+            color: ''
+          }
+        }));
+      };
+
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container py-4"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -79339,7 +79445,12 @@ function (_Component) {
         className: "card-header"
       }, "Login"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "card-body"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ModalBox__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        open: this.state.boxModal.isModal,
+        message: this.state.boxModal.message,
+        color: this.state.boxModal.color,
+        onCloseModal: onCloseModal
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         htmlFor: "title"
       }, "Auth Code ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         style: {
@@ -79366,6 +79477,452 @@ function (_Component) {
 
 ;
 /* harmony default export */ __webpack_exports__["default"] = (LoginPage);
+
+/***/ }),
+
+/***/ "./resources/js/components/LogoutPage.js":
+/*!***********************************************!*\
+  !*** ./resources/js/components/LogoutPage.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _LoadingBadge__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./LoadingBadge */ "./resources/js/components/LoadingBadge.js");
+/* harmony import */ var _ModalBox__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ModalBox */ "./resources/js/components/ModalBox.js");
+/* harmony import */ var _utilities_Errors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utilities/Errors */ "./resources/js/utilities/Errors.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+
+var LogoutPage =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(LogoutPage, _Component);
+
+  function LogoutPage(props) {
+    var _this;
+
+    _classCallCheck(this, LogoutPage);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(LogoutPage).call(this, props));
+    _this.state = {
+      loadingText: '',
+      boxModal: {
+        isModal: true,
+        message: 'You have logout',
+        color: 'green'
+      }
+    };
+    localStorage.removeItem('authToken');
+    return _this;
+  }
+
+  _createClass(LogoutPage, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var onCloseModal = function onCloseModal() {
+        _this2.setState(_objectSpread({}, _this2.state, {
+          boxModal: {
+            isModal: false,
+            message: '',
+            color: ''
+          }
+        }));
+
+        var history = _this2.props.history;
+        history.push('/loginpage');
+      };
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container py-4"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row justify-content-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "card"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "card-body"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ModalBox__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        open: this.state.boxModal.isModal,
+        message: this.state.boxModal.message,
+        color: this.state.boxModal.color,
+        onCloseModal: onCloseModal
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null))))));
+    }
+  }]);
+
+  return LogoutPage;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+;
+/* harmony default export */ __webpack_exports__["default"] = (LogoutPage);
+
+/***/ }),
+
+/***/ "./resources/js/components/ManageDetailList.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/ManageDetailList.js ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utilities_MyFunc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utilities/MyFunc */ "./resources/js/utilities/MyFunc.js");
+/* harmony import */ var _LoadingBadge__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./LoadingBadge */ "./resources/js/components/LoadingBadge.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+
+var ManageDetailList =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(ManageDetailList, _Component);
+
+  function ManageDetailList(props) {
+    var _this;
+
+    _classCallCheck(this, ManageDetailList);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ManageDetailList).call(this, props));
+    _this.state = {
+      dataServer: {
+        title: '',
+        booking_date: '',
+        booking_day: '',
+        book_time: {
+          id: 0,
+          description: ''
+        },
+        meeting_room: {
+          id: 0,
+          description: ''
+        }
+      },
+      loadingText: ''
+    };
+    return _this;
+  }
+
+  _createClass(ManageDetailList, [{
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.setState({
+        dataServer: {
+          title: '',
+          booking_date: '',
+          booking_day: '',
+          book_time: {
+            id: 0,
+            description: ''
+          },
+          meeting_room: {
+            id: 0,
+            description: ''
+          }
+        },
+        loadingText: ''
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      var bookingId = this.props.match.params.id;
+      this.setState({
+        loadingText: '[ Loading .. ]'
+      });
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/bookings/".concat(bookingId)).then(function (response) {
+        _this2.setState({
+          dataServer: {
+            title: response.data.title,
+            booking_date: response.data.booking_date,
+            booking_day: response.data.booking_day,
+            book_time: {
+              id: response.data.book_time.id,
+              description: response.data.book_time.description
+            },
+            meeting_room: {
+              id: response.data.meeting_room.id,
+              description: response.data.meeting_room.description
+            }
+          },
+          loadingText: ''
+        });
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var dataServer = this.state.dataServer;
+      console.log(dataServer);
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "container py-4"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "row justify-content-center"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "col-md-8"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "card"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "card-header"
+      }, "Booking Detail ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_LoadingBadge__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        text: this.state.loadingText
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "card-body"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Link"], {
+        to: "/managelist"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        type: "button",
+        className: "btn btn-primary mb-3"
+      }, "Back")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("table", {
+        className: "table"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Title"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, ":"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, dataServer.title)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Date"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, ":"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, dataServer.booking_date, ", ", dataServer.booking_day)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Time"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, ":"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, dataServer.book_time.description)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Meeting Room"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, ":"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, dataServer.meeting_room.description)))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        type: "button",
+        className: "btn btn-success"
+      }, "Approve"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+        className: "mr-2"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        type: "button",
+        className: "btn btn-danger"
+      }, "Delete"))))));
+    }
+  }]);
+
+  return ManageDetailList;
+}(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (ManageDetailList);
+
+/***/ }),
+
+/***/ "./resources/js/components/ManageList.js":
+/*!***********************************************!*\
+  !*** ./resources/js/components/ManageList.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+/* harmony import */ var _cantonjs_react_scroll_view__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @cantonjs/react-scroll-view */ "./node_modules/@cantonjs/react-scroll-view/es/index.js");
+/* harmony import */ var _LoadingBadge__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./LoadingBadge */ "./resources/js/components/LoadingBadge.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+
+var ManageList =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(ManageList, _Component);
+
+  function ManageList() {
+    var _this;
+
+    _classCallCheck(this, ManageList);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ManageList).call(this));
+    _this.state = {
+      bookings: [],
+      searchBookings: [],
+      loadingText: ''
+    };
+    _this.searchHandler = _this.searchHandler.bind(_assertThisInitialized(_this));
+    _this.getData = _this.getData.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(ManageList, [{
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.setState({
+        bookings: [],
+        searchBookings: [],
+        loadingText: ''
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.getData();
+    }
+  }, {
+    key: "getData",
+    value: function getData() {
+      var _this2 = this;
+
+      this.setState({
+        loadingText: '[ Loading .. ]'
+      });
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/bookings?approved=0').then(function (response) {
+        _this2.setState({
+          bookings: response.data,
+          searchBookings: response.data,
+          loadingText: ''
+        });
+      });
+    }
+  }, {
+    key: "searchHandler",
+    value: function searchHandler(obj) {
+      var txt = obj.target.value;
+
+      if (txt != '') {
+        var searchArr = this.state.bookings;
+        searchArr = searchArr.filter(function (d) {
+          return d.title.toLowerCase().includes(txt.toLowerCase()) || d.booking_date.toLowerCase().includes(txt.toLowerCase()) || d.booking_day.toLowerCase().includes(txt.toLowerCase()) || d.book_time.description.toLowerCase().includes(txt.toLowerCase()) || d.meeting_room.description.toLowerCase().includes(txt.toLowerCase());
+        });
+        this.setState({
+          searchBookings: searchArr
+        });
+      } else {
+        this.setState({
+          searchBookings: this.state.bookings
+        });
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var searchBookings = this.state.searchBookings;
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "container py-4"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "row justify-content-center"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "col-md-8"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "card"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "card-header"
+      }, "Manage Pending List ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_LoadingBadge__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        text: this.state.loadingText
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "card-body"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "form-group"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+        type: "text",
+        className: "form-control",
+        id: "bookSearch",
+        placeholder: "Search here",
+        onChange: this.searchHandler
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_cantonjs_react_scroll_view__WEBPACK_IMPORTED_MODULE_3__["ScrollView"], {
+        style: {
+          height: screen.height * 0.5
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", {
+        className: "list-group"
+      }, searchBookings.map(function (booking) {
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+          className: "list-group-item list-group-item-action",
+          to: "/detailmanage/".concat(booking.id),
+          key: booking.id
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+          style: {
+            fontSize: '14px'
+          }
+        }, booking.title), " ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+          style: {
+            fontSize: '10px'
+          }
+        }, booking.booking_date + ', ' + booking.booking_day + ', ' + booking.book_time.description), " ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+          style: {
+            fontSize: '12px'
+          }
+        }, booking.meeting_room.description), " ", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null));
+      }))))))));
+    }
+  }]);
+
+  return ManageList;
+}(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (ManageList);
 
 /***/ }),
 
@@ -79416,23 +79973,35 @@ function (_Component) {
   _createClass(MenuBar, [{
     key: "render",
     value: function render() {
+      var loggedInButtons;
+
+      if (localStorage.getItem('authToken')) {
+        loggedInButtons = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+          to: "/logoutpage"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          className: "btn btn-danger"
+        }, "Logout")));
+      } else {
+        loggedInButtons = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+          to: "/"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          className: "btn btn-success"
+        }, "Home")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "mr-2"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+          to: "/loginpage"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          className: "btn btn-primary"
+        }, "Manage")));
+      }
+
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container col-md-5"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "card"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "card-body"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
-        to: "/"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        className: "btn btn-success"
-      }, "Home")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "mr-2"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
-        to: "/loginpage"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        className: "btn btn-primary"
-      }, "Manage")))));
+      }, loggedInButtons)));
     }
   }]);
 
@@ -79605,11 +80174,41 @@ function (_Component) {
     _this.handleCreateNewBooking = _this.handleCreateNewBooking.bind(_assertThisInitialized(_this));
     _this.renderErrorFor = _this.renderErrorFor.bind(_assertThisInitialized(_this));
     _this.getPickerValue = _this.getPickerValue.bind(_assertThisInitialized(_this));
-    _this.getData = _this.getData.bind(_assertThisInitialized(_this));
+    _this.getData = _this.getData.bind(_assertThisInitialized(_this)); // redirect page to manage list if already login.
+
+    var history = _this.props.history;
+
+    if (localStorage.getItem('authToken')) {
+      history.push('/managelist');
+    }
+
     return _this;
   }
 
   _createClass(NewBooking, [{
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.setState({
+        dataServer: {
+          title: '',
+          booking_date: '',
+          booking_day: '',
+          book_time_id: 0,
+          meeting_room_id: 0
+        },
+        book_times: [],
+        meeting_rooms: [],
+        choosen_booking_date: '',
+        loadingText: '',
+        errors: [],
+        boxModal: {
+          isModal: false,
+          message: '',
+          color: ''
+        }
+      });
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.getData('book_times');
@@ -79928,8 +80527,14 @@ var PrivateRoute = function PrivateRoute(_ref) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSqlErrors", function() { return getSqlErrors; });
 var getSqlErrors = function getSqlErrors(sqlErrorMessage) {
-  if (sqlErrorMessage.toLowerCase().includes('SQLSTATE[23000]'.toLowerCase())) {
-    return 'Duplicate data';
+  if (typeof sqlErrorMessage !== 'undefined') {
+    if (sqlErrorMessage.toLowerCase().includes('SQLSTATE[23000]'.toLowerCase())) {
+      return 'Duplicate data';
+    }
+
+    if (sqlErrorMessage.toLowerCase().includes('Unauthorised'.toLowerCase())) {
+      return 'Access denied';
+    }
   }
 
   return 'Server error';

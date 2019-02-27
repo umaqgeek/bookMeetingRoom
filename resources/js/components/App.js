@@ -9,7 +9,10 @@ import NewBooking from './NewBooking';
 import DetailBooking from './DetailBooking';
 import MenuBar from './MenuBar';
 import LoginPage from './LoginPage';
+import LogoutPage from './LogoutPage';
 import NoMatch from './NoMatch';
+import ManageList from './ManageList';
+import ManageDetailList from './ManageDetailList';
 
 class App extends Component {
   render () {
@@ -24,6 +27,9 @@ class App extends Component {
               <Route exact path='/create' component={NewBooking} />
               <Route exact path='/detail/:id' component={DetailBooking} />
               <Route exact path='/loginpage' component={LoginPage} />
+              <Route exact path='/logoutpage' component={LogoutPage} />
+              <PrivateRoute exect path='/detailmanage/:id' component={ManageDetailList} />
+              <PrivateRoute exect path='/managelist' component={ManageList} />
               <Route component={NoMatch} />
             </Switch>
           </div>

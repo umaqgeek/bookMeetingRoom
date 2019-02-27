@@ -36,7 +36,35 @@ class NewBooking extends Component {
     this.renderErrorFor = this.renderErrorFor.bind(this);
     this.getPickerValue = this.getPickerValue.bind(this);
     this.getData = this.getData.bind(this);
+
+    // redirect page to manage list if already login.
+    const { history } = this.props;
+    if (localStorage.getItem('authToken')) {
+      history.push('/managelist');
+    }
   }
+
+  componentWillUnmount() {
+    this.setState({
+      dataServer: {
+        title: '',
+        booking_date: '',
+        booking_day: '',
+        book_time_id: 0,
+        meeting_room_id: 0
+      },
+      book_times: [],
+      meeting_rooms: [],
+      choosen_booking_date: '',
+      loadingText: '',
+      errors: [],
+      boxModal: {
+        isModal: false,
+        message: '',
+        color: ''
+      }
+    });
+  };
 
   componentDidMount() {
     this.getData('book_times');
