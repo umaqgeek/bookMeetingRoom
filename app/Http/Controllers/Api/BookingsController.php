@@ -9,6 +9,11 @@ use App\Models\Booking;
 
 class BookingsController extends Controller
 {
+    public function __construct()
+    {
+        Booking::whereRaw('DATE(booking_date) < DATE(NOW())')->delete();
+    }
+
     function listAll(Request $req)
     {
         $approved = isset($req->approved) ? $req->approved : 1;

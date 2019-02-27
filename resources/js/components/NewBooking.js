@@ -7,6 +7,7 @@ import { getSqlErrors } from '../utilities/Errors';
 import { getDayOfWeek } from '../utilities/MyFunc';
 import LoadingBadge from './LoadingBadge';
 import ModalBox from './ModalBox';
+import { Link } from 'react-router-dom';
 
 class NewBooking extends Component {
   constructor (props) {

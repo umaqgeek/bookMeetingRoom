@@ -78830,7 +78830,8 @@ function (_Component) {
       boxModal: {
         isModal: true,
         message: 'Your booking has been saved. It will be pending.',
-        color: 'green'
+        color: 'green',
+        isFooter: 'To publish your booking, please contact the appointed MPP.'
       }
     };
     return _this;
@@ -78868,7 +78869,8 @@ function (_Component) {
         open: this.state.boxModal.isModal,
         message: this.state.boxModal.message,
         color: this.state.boxModal.color,
-        onCloseModal: onCloseModal
+        onCloseModal: onCloseModal,
+        isFooter: this.state.boxModal.isFooter
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null))))));
     }
   }]);
@@ -79243,7 +79245,11 @@ function (_Component) {
         className: "btn btn-success mt-4",
         type: "button",
         onClick: this.props.onConfirmModal
-      }, "Ok"))));
+      }, "Ok"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "btn btn-dark mt-4 mx-4",
+        type: "button",
+        onClick: this.props.onCloseModal
+      }, "Cancel"))));
     }
   }]);
 
@@ -80381,6 +80387,14 @@ function (_Component) {
   _createClass(ModalBox, [{
     key: "render",
     value: function render() {
+      var contact = '';
+
+      if (this.props.isFooter) {
+        contact = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "mt-5"
+        }, this.props.isFooter);
+      }
+
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_responsive_modal__WEBPACK_IMPORTED_MODULE_1__["default"], {
         open: this.props.open,
         onClose: this.props.onCloseModal,
@@ -80394,7 +80408,7 @@ function (_Component) {
         style: {
           color: this.props.color
         }
-      }, this.props.message))));
+      }, this.props.message), contact)));
     }
   }]);
 
@@ -80428,6 +80442,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utilities_MyFunc__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utilities/MyFunc */ "./resources/js/utilities/MyFunc.js");
 /* harmony import */ var _LoadingBadge__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./LoadingBadge */ "./resources/js/components/LoadingBadge.js");
 /* harmony import */ var _ModalBox__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./ModalBox */ "./resources/js/components/ModalBox.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
@@ -80449,6 +80464,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 

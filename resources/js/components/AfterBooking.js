@@ -13,7 +13,8 @@ class AfterBooking extends Component {
       boxModal: {
         isModal: true,
         message: 'Your booking has been saved. It will be pending.',
-        color: 'green'
+        color: 'green',
+        isFooter: 'To publish your booking, please contact the appointed MPP.'
       }
     };
   };
@@ -46,6 +47,7 @@ class AfterBooking extends Component {
                   message={this.state.boxModal.message}
                   color={this.state.boxModal.color}
                   onCloseModal={onCloseModal}
+                  isFooter={this.state.boxModal.isFooter}
                 />
 
               <br />
