@@ -61,7 +61,8 @@
         ],
         "post-install-cmd": [
             "chmod -R 777 storage",
-            "php artisan passport:keys --force"
+            "php artisan passport:keys --force",
+            "php artisan passport:client --personal"
         ]
     }
 }
