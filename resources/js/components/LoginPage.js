@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import LoadingBadge from './LoadingBadge';
 
 class LoginPage extends Component {
