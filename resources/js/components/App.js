@@ -14,6 +14,7 @@ import NoMatch from './NoMatch';
 import ManageList from './ManageList';
 import ManageDetailList from './ManageDetailList';
 import AfterBooking from './AfterBooking';
+import About from './About';
 
 class App extends Component {
   render () {
@@ -30,6 +31,7 @@ class App extends Component {
               <Route exact path='/loginpage' component={LoginPage} />
               <Route exact path='/logoutpage' component={LogoutPage} />
               <Route exact path='/afterbooking' component={AfterBooking} />
+              <Route exact path='/about' component={About} />
               <PrivateRoute exect path='/detailmanage/:id' component={ManageDetailList} />
               <PrivateRoute exect path='/managelist' component={ManageList} />
               <Route component={NoMatch} />
