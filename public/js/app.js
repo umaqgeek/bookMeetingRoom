@@ -78828,9 +78828,9 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "mb-5",
         style: {
-          fontSize: '18px'
+          fontSize: '16px'
         }
-      }, "This system is used by students society in University Teknikal Malaysia Melaka (UTeM) to book and manage meeting rooms at the building of Student Activity Centre. Currently, it is managed by the MPP."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "This system is used by students society in University Teknikal Malaysia Melaka (UTeM) to book and manage meeting rooms at the building of Student Activity Centre. Currently, it is managed by the current Majlis Perwakilan Pelajar (MPP)."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "mb-1",
         style: {
           fontStyle: 'italic'
@@ -78838,7 +78838,10 @@ function (_Component) {
       }, "Develop by Umar Mukhtar ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         href: "http://tuffah.info",
         target: "_blank"
-      }, "Tuffah Informatics"), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "umaqgeek@gmail.com"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+      }, "Tuffah Informatics"), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        href: "https://www.facebook.com/kidzeclipes",
+        target: "_blank"
+      }, "umaqgeek@gmail.com"), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "Version 1.0.7, 2019"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
         to: "/"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
