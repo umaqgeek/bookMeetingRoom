@@ -78997,7 +78997,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ManageList__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./ManageList */ "./resources/js/components/ManageList.js");
 /* harmony import */ var _ManageDetailList__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./ManageDetailList */ "./resources/js/components/ManageDetailList.js");
 /* harmony import */ var _AfterBooking__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./AfterBooking */ "./resources/js/components/AfterBooking.js");
-/* harmony import */ var _About__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./About */ "./resources/js/components/About.js");
+/* harmony import */ var _About__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./About */ "./resources/js/components/About.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -79074,7 +79074,7 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         exact: true,
         path: "/about",
-        component: _About__WEBPACK_IMPORTED_MODULE_16__["default"]
+        component: _About__WEBPACK_IMPORTED_MODULE_15__["default"]
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PrivateRoute__WEBPACK_IMPORTED_MODULE_4__["PrivateRoute"], {
         exect: true,
         path: "/detailmanage/:id",
@@ -79533,7 +79533,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var Header = function Header() {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
-    className: "navbar navbar-expand-md navbar-light navbar-laravel"
+    className: "navbar navbar-expand-md navbar-light navbar-laravel fixed-top"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
@@ -80423,7 +80423,7 @@ function (_Component) {
       }
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container col-md-5"
+        className: "container col-md-5 mt-5"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "card"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
